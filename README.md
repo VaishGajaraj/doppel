@@ -125,7 +125,8 @@ flowchart LR
 $ git clone https://github.com/VaishGajaraj/doppel && cd doppel
 $ npm install
 $ npm run demo        # record the example library, catch the injected regressions
-$ npm test            # 48 tests: format vectors, recorder, differ, e2e
+$ npm run mutants     # the mutation benchmark: 10/10 faults caught, 1 designed miss
+$ npm test            # format vectors, recorder, differ, mutation sweep, e2e
 ```
 
 Record your own library's boundary from a driver or test suite:
@@ -144,11 +145,11 @@ const lib = instrument(mylib, { module: 'mylib' });
 writeContract('contracts/mylib.dopl.jsonl', session.finalize());
 ```
 
-Or attach to an existing test run without touching code:
+Or attach to an existing test run without touching code (the two modes
+produce byte-identical contracts — the test suite pins it):
 
 ```console
-$ DOPPEL_CONFIG=doppel.config.json \
-    node --import doppel/register run-tests.js
+$ doppel record --config doppel.config.json -- node run-tests.js
 ```
 
 Then wire the port to a stdio adapter and check it:
@@ -206,6 +207,32 @@ alternatives — [docs/adr](docs/adr):
 Where v0 consciously deviates from an ADR, it's written down:
 [implementation notes](docs/adr/implementation-notes.md).
 
+## Measured, not asserted
+
+The oracle claim is benchmarked in CI, not narrated. `npm run mutants`
+applies eleven single-fault mutants to the port — off-by-one divisors,
+nearest-rank substitution, a dropped range check, a forgotten square root —
+and checks each against the recorded contract:
+
+```console
+  ✓ mean-divides-by-n-plus-1           caught   4 breaking divergence(s)
+  ✓ percentile-nearest-rank            caught   4 breaking divergence(s)
+  ✓ percentile-skips-range-check       caught   2 breaking divergence(s)
+  ✓ stddev-returns-variance            caught   3 breaking divergence(s)
+  …
+  core mutants caught: 10/10
+  blind-spot mutant missed as designed — the oracle is exactly as wide as the corpus
+```
+
+**10/10 core mutants caught — and one mutant deliberately missed.** The
+blind-spot mutant's fault only fires on inputs the corpus never recorded, and
+CI asserts that doppel does *not* catch it. A verification tool that hides
+its blind spot is worse than none; doppel's blind spot is precisely the
+recorded corpus's width, which is why widening recorded coverage with
+generated inputs ([ADR-008](docs/adr/adr-008-input-generation.md)) is on the
+roadmap, and why `doppel check` passing means "matches everything we
+recorded", never more.
+
 ## What would make us kill this
 
 This project ships with its falsifiers attached. The venture thesis behind
@@ -215,7 +242,8 @@ way:
 1. **The oracle works.** Boundary recording must catch **≥ 8/10 injected
    regressions** that the target-language test suite misses, on a real
    5–20K-LOC library. *Kill if it can't after honest effort.* (The statlib
-   demo is the miniature; the M4 dogfood port is the real test.)
+   mutation sweep — 10/10 at miniature scale — is the model; the M4 dogfood
+   port on a real library is the real test.)
 2. **Teams want it.** Five discovery interviews with teams whose rewrites are
    stalled on verification. *Kill if not one would run it this quarter.*
 3. **It stays agent-buildable.** Token spend logged per milestone against a

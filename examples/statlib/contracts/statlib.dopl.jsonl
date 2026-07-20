@@ -1,4 +1,4 @@
-{"body_hash":"53a2b9685ff940537ff4a85bc833704c9b5a39d2ea122cec81408682050c6f7d","doppel":"0.1","interaction_count":24,"kind":"doppel-contract","language":"typescript","library":"statlib","redactions":[]}
+{"body_hash":"53a2b9685ff940537ff4a85bc833704c9b5a39d2ea122cec81408682050c6f7d","doppel":"0.1","interaction_count":24,"kind":"doppel-contract","language":"javascript","library":"statlib","redactions":[]}
 {"args":{"n":[["arr",[1]],["arr",[2,3,4,5,6,7,8,9,10,11]],["prim",1],["prim",2],["prim",3],["prim",4],["prim",5],["prim",6],["prim",7],["prim",8],["prim",9],["prim",10]],"r":0},"boundary":"statlib#mean","outcome":{"kind":"return","value":{"n":[["prim",5.5]],"r":0}},"seq":0,"timing":"sync"}
 {"args":{"n":[["arr",[1]],["arr",[2]],["prim",3]],"r":0},"boundary":"statlib#mean","outcome":{"kind":"return","value":{"n":[["prim",3]],"r":0}},"seq":1,"timing":"sync"}
 {"args":{"n":[["arr",[1]],["arr",[2,3,4,5,6]],["prim",0.1],["prim",0.2],["prim",0.30000000000000004],["prim",1.5],["prim",-2.25]],"r":0},"boundary":"statlib#mean","outcome":{"kind":"return","value":{"n":[["prim",-0.02999999999999998]],"r":0}},"seq":2,"timing":"sync"}

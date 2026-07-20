@@ -26,6 +26,8 @@ export interface RecordTarget {
 export interface RecordConfig {
   library: string;
   out: string;
+  /** Language of the reference implementation (header metadata). */
+  language?: string;
   record: { include: Array<string | RecordTarget> };
   redactions?: RedactionRule[];
 }
@@ -64,6 +66,7 @@ if (config) {
   const targets = normalizeTargets(config);
   const session = new RecordSession({
     library: config.library,
+    ...(config.language ? { language: config.language } : {}),
     ...(config.redactions ? { redactions: config.redactions } : {}),
   });
   session.start();

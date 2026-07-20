@@ -36,7 +36,8 @@
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",
     "test": "node --test \"test/*.test.ts\"",
-    "demo": "node examples/statlib/run-demo.js"
+    "demo": "node examples/statlib/run-demo.js",
+    "mutants": "node examples/statlib/mutation-run.js"
   },
   "dependencies": {
     "import-in-the-middle": "^1.14.2",

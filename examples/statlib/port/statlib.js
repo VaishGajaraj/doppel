@@ -1,5 +1,5 @@
 /**
- * The "port" of reference/statlib.ts — imagine an agent translated it to
+ * The "port" of reference/statlib.js — imagine an agent translated it to
  * another language. Two regressions are injected on purpose, the kind a
  * target-language test suite written from the code (not the behavior) tends
  * to bless:

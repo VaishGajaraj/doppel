@@ -13,7 +13,7 @@ keys, ECMAScript number formatting, no insignificant whitespace — so the file
 is greppable, and PR diffs show exactly the behavior that changed.
 
 ```json
-{"body_hash":"53a2b96…","doppel":"0.1","interaction_count":24,"kind":"doppel-contract","language":"typescript","library":"statlib","redactions":[]}
+{"body_hash":"53a2b96…","doppel":"0.1","interaction_count":24,"kind":"doppel-contract","language":"javascript","library":"statlib","redactions":[]}
 {"args":{"n":[["arr",[1]],["arr",[2,3,…]],["prim",1],…],"r":0},"boundary":"statlib#mean","outcome":{"kind":"return","value":{"n":[["prim",5.5]],"r":0}},"seq":0,"timing":"sync"}
 ```
 

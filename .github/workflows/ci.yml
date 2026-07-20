@@ -20,6 +20,7 @@ jobs:
       - run: npm run build
       - run: npm test
       - run: npm run demo
+      - run: npm run mutants
 
   contract-integrity:
     name: contract integrity (committed contract verifies)

@@ -60,6 +60,8 @@ export function toErrorShape(error: unknown): ErrorShape {
 
 export interface SessionOptions {
   library: string;
+  /** Language of the reference implementation (header metadata). */
+  language?: string;
   redactions?: RedactionRule[];
 }
 
@@ -170,6 +172,7 @@ export class RecordSession {
     const interactions = [...this.done].sort((a, b) => a.seq - b.seq);
     const header = buildHeader({
       library: this.opts.library,
+      ...(this.opts.language ? { language: this.opts.language } : {}),
       redactions: this.redactions(),
       interactions,
     });

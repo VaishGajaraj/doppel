@@ -19,9 +19,10 @@ function sortKey(v: unknown, seen: Set<object>): string {
   const t = typeof v;
   if (t === 'string') return 's:' + v;
   if (t === 'number') return 'n:' + (Object.is(v, -0) ? '-0' : String(v));
-  if (t === 'boolean' || t === 'bigint' || t === 'undefined' || t === 'symbol') {
-    return t[0] + ':' + String(v);
-  }
+  if (t === 'boolean') return 'b:' + String(v);
+  if (t === 'bigint') return 'i:' + String(v);
+  if (t === 'undefined') return 'u:';
+  if (t === 'symbol') return 'y:' + String(v);
   if (t === 'function') return 'f:' + ((v as Function).name || 'anonymous');
   const obj = v as object;
   if (seen.has(obj)) return '~cycle';

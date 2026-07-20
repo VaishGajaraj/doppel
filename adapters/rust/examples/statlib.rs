@@ -1,4 +1,4 @@
-//! A correct Rust port of examples/statlib/reference/statlib.ts, served as a
+//! A correct Rust port of examples/statlib/reference/statlib.js, served as a
 //! doppel adapter. With the recorded contract from the statlib example:
 //!
 //!   cargo build --example statlib

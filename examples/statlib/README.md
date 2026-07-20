@@ -14,12 +14,17 @@ $ npm run demo
 ## What happens
 
 1. **Record** — [`record.js`](record.js) drives the reference implementation
-   ([`reference/statlib.ts`](reference/statlib.ts)) through a deterministic
-   corpus (fixed datasets + seeded LCG) with the boundary instrumented. The
-   24 recorded interactions land in
+   ([`reference/statlib.js`](reference/statlib.js)) through a deterministic
+   corpus ([`corpus.js`](corpus.js): fixed datasets + seeded LCG) with the
+   boundary instrumented. The 24 recorded interactions land in
    [`contracts/statlib.dopl.jsonl`](contracts/statlib.dopl.jsonl) — which is
    committed, because contracts are review artifacts. Recording is
    deterministic: re-run it and the body hash is identical.
+
+   The same corpus recorded the other way — [`workload.js`](workload.js) is a
+   plain script with no doppel imports, run under
+   `doppel record --config doppel.config.json` — produces a **byte-identical**
+   contract. The test suite pins that equivalence.
 
 2. **Check** — the "port" ([`port/statlib.js`](port/statlib.js)) carries two
    injected regressions and one harmless drift:
@@ -37,6 +42,21 @@ $ npm run demo
 Both regressions are invisible to a test suite that asserts what the port
 *does*; they are only visible against a record of what the original *did*.
 That is the entire pitch, in one directory.
+
+## The mutation sweep
+
+`npm run mutants` goes further than two hand-picked bugs: it applies eleven
+single-fault mutants ([`port/mutants.js`](port/mutants.js)) — off-by-one
+divisors, skipped averaging, nearest-rank substitution, dropped range checks,
+a forgotten square root — and measures the catch rate against the contract:
+
+- **10/10 core mutants caught** (each with the breaking-divergence count),
+  machine-checked in CI. The venture kill criterion is ≥ 8/10.
+- **1 blind-spot mutant missed, by design**: its fault only fires on inputs
+  (non-finite values) the corpus never recorded. The oracle is exactly as
+  wide as the corpus — that miss is the honest demonstration of the limit,
+  and the reason input generation ([ADR-008](../../docs/adr/adr-008-input-generation.md))
+  is on the roadmap.
 
 ## The same check, against Rust
 

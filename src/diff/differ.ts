@@ -85,6 +85,8 @@ export interface CheckOptions {
   adapterCommand: string;
   benign?: string[];
   timeoutMs?: number;
+  /** Extra environment variables for the adapter process. */
+  env?: Record<string, string>;
   onProgress?: (done: number, total: number) => void;
 }
 
@@ -97,6 +99,7 @@ export async function checkContract(opts: CheckOptions): Promise<CheckResult> {
 
   const client = new AdapterClient(opts.adapterCommand, {
     ...(opts.timeoutMs !== undefined ? { timeoutMs: opts.timeoutMs } : {}),
+    ...(opts.env ? { env: opts.env } : {}),
   });
   const benign = opts.benign ?? [];
   const divergences: Divergence[] = [];
@@ -113,7 +116,7 @@ export async function checkContract(opts: CheckOptions): Promise<CheckResult> {
     let done = 0;
     for (const interaction of contract.interactions) {
       const divergence = await checkOne(client, interaction, benign);
-      summary[divergence.verdict === 'identical' ? 'identical' : divergence.verdict]++;
+      summary[divergence.verdict]++;
       if (divergence.verdict !== 'identical') divergences.push(divergence);
       opts.onProgress?.(++done, contract.interactions.length);
     }

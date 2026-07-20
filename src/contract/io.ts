@@ -28,7 +28,7 @@ export function buildHeader(opts: {
     kind: 'doppel-contract',
     doppel: FORMAT_VERSION,
     library: opts.library,
-    language: opts.language ?? 'typescript',
+    language: opts.language ?? 'javascript',
     interaction_count: opts.interactions.length,
     body_hash: computeBodyHash(opts.interactions),
     redactions: opts.redactions ?? [],

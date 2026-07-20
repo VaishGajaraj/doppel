@@ -18,9 +18,13 @@ export class AdapterClient {
   readonly timeoutMs: number;
   adapterName = '(unknown)';
 
-  constructor(command: string, opts: { timeoutMs?: number } = {}) {
+  constructor(command: string, opts: { timeoutMs?: number; env?: Record<string, string> } = {}) {
     this.timeoutMs = opts.timeoutMs ?? 30_000;
-    this.child = spawn(command, { shell: true, stdio: ['pipe', 'pipe', 'inherit'] });
+    this.child = spawn(command, {
+      shell: true,
+      stdio: ['pipe', 'pipe', 'inherit'],
+      env: opts.env ? { ...process.env, ...opts.env } : process.env,
+    });
     this.lines = createInterface({ input: this.child.stdout! });
     this.lines.on('line', (line) => {
       const trimmed = line.trim();
@@ -60,7 +64,11 @@ export class AdapterClient {
       const timer = setTimeout(() => {
         const i = this.queue.indexOf(waiter);
         if (i >= 0) this.queue.splice(i, 1);
-        reject(new AdapterError(`adapter timed out after ${this.timeoutMs}ms`));
+        // A late reply after a timeout would pair with the NEXT request and
+        // silently misalign every following frame — poison the client instead.
+        this.exited = `adapter timed out after ${this.timeoutMs}ms`;
+        this.child.kill();
+        reject(new AdapterError(this.exited));
       }, this.timeoutMs);
       const settle =
         <T,>(fn: (v: T) => void) =>

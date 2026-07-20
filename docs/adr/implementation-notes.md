@@ -22,6 +22,17 @@ is load-bearing for the whole format, so v0 ships its own capturer
 implementing devalue's flat-graph pattern with canonical traversal (sorted
 keys, sorted Map/Set members). The ADR text now records this.
 
+## Register hook wraps JavaScript modules, not TypeScript sources (ADR-001)
+
+`doppel record` / `doppel/register` transparently wraps ESM and CJS
+JavaScript modules — including built output and node_modules packages, the
+common recording targets. Modules loaded *as TypeScript source* (via Node's
+type stripping) pass through import-in-the-middle unwrapped today; record
+TS-source boundaries with the explicit `instrument()` API until iitm handles
+the TypeScript module format. The register test suite pins the supported
+behavior: CLI-recorded and API-recorded contracts of the same corpus are
+byte-identical.
+
 ## registerHooks() migration pending (ADR-001)
 
 v0 loads import-in-the-middle via `module.register()` (the battle-tested

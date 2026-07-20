@@ -40,7 +40,7 @@ function fail(message: string): never {
 }
 
 function color(code: number, s: string): string {
-  return process.stdout.isTTY ? `[${code}m${s}[0m` : s;
+  return process.stdout.isTTY ? `\x1b[${code}m${s}\x1b[0m` : s;
 }
 
 function registerEntry(): string {

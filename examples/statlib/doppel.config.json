@@ -1,0 +1,8 @@
+{
+  "library": "statlib",
+  "out": "examples/statlib/contracts/statlib.dopl.jsonl",
+  "record": {
+    "include": [{ "specifier": "reference/statlib.js", "label": "statlib" }]
+  },
+  "redactions": []
+}
