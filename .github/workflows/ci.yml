@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  core:
+    name: core (typecheck, tests, demo)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run build
+      - run: npm test
+      - run: npm run demo
+
+  contract-integrity:
+    name: contract integrity (committed contract verifies)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node bin/doppel.js hash --contract examples/statlib/contracts/statlib.dopl.jsonl
+
+  rust-adapter:
+    name: rust adapter (build, test, cross-language check)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo test
+        working-directory: adapters/rust
+      - run: cargo build --example statlib
+        working-directory: adapters/rust
+      - name: verify the Rust port against the recorded TypeScript contract
+        run: |
+          node bin/doppel.js check \
+            --contract examples/statlib/contracts/statlib.dopl.jsonl \
+            --adapter "./adapters/rust/target/debug/examples/statlib"

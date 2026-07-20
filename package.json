@@ -1,0 +1,49 @@
+{
+  "name": "doppel",
+  "version": "0.1.0",
+  "description": "Self-serve port verification: record a library's behavioral boundary, freeze it as a language-neutral conformance contract, and diff any reimplementation against it.",
+  "keywords": [
+    "differential-testing",
+    "conformance",
+    "migration",
+    "rewrite",
+    "verification",
+    "golden-master",
+    "characterization-testing"
+  ],
+  "license": "AGPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VaishGajaraj/doppel.git"
+  },
+  "type": "module",
+  "bin": {
+    "doppel": "./bin/doppel.js"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./register": "./dist/record/register.js",
+    "./adapter": "./dist/replay/serve.js"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test \"test/*.test.ts\"",
+    "demo": "node examples/statlib/run-demo.js"
+  },
+  "dependencies": {
+    "import-in-the-middle": "^1.14.2",
+    "require-in-the-middle": "^7.5.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "typescript": "^5.9.2"
+  }
+}

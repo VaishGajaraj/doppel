@@ -1,0 +1,13 @@
+[package]
+name = "doppel-adapter"
+version = "0.1.0"
+edition = "2021"
+license = "AGPL-3.0-only"
+description = "Reference Rust adapter for the doppel port-verification protocol (NDJSON over stdio)."
+repository = "https://github.com/VaishGajaraj/doppel"
+
+[dependencies]
+serde_json = "1"
+
+[[example]]
+name = "statlib"

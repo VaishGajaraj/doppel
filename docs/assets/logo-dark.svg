@@ -1,0 +1,12 @@
+<svg width="340" height="80" viewBox="0 0 340 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="12" y1="10" x2="72" y2="70" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#818CF8"/>
+      <stop offset="1" stop-color="#67E8F9"/>
+    </linearGradient>
+  </defs>
+  <rect x="26" y="8" width="44" height="44" rx="11" stroke="url(#g)" stroke-width="4" opacity="0.55"/>
+  <rect x="12" y="24" width="44" height="44" rx="11" fill="url(#g)"/>
+  <path d="M24 46.5 L31.5 54 L45 38.5" stroke="#0B1120" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="88" y="57" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="42" font-weight="700" letter-spacing="-1" fill="#F9FAFB">doppel</text>
+</svg>
