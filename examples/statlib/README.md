@@ -51,3 +51,8 @@ $ node bin/doppel.js check \
     --contract examples/statlib/contracts/statlib.dopl.jsonl \
     --adapter "./adapters/rust/target/debug/examples/statlib"
 ```
+
+The first run of this check in CI reported 23/24 identical — the divergence
+was serde_json's default float parsing rounding a recorded value to its
+1-ULP neighbor (fixed with the `float_roundtrip` feature). The gate caught a
+toolchain infidelity before it could masquerade as port correctness.

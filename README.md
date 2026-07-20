@@ -180,6 +180,13 @@ CI verifies the same committed contract two ways:
 One contract, two implementations, both classifications machine-checked on
 every push.
 
+The very first CI run of the Rust check caught a real bug — not in the port,
+but in the toolchain: serde_json's default float parsing is not correctly
+rounded, and doppel flagged a recorded value coming back as its 1-ULP
+neighbor (`0.9946342753246427` → `0.9946342753246428`, one bit apart).
+Enabling serde_json's `float_roundtrip` feature fixed it. That is precisely
+the class of silent drift this tool exists to catch, caught by its own gate.
+
 ## Architecture
 
 Every non-obvious choice has an ADR with the rationale and the rejected

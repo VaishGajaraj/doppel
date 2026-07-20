@@ -7,7 +7,10 @@ description = "Reference Rust adapter for the doppel port-verification protocol 
 repository = "https://github.com/VaishGajaraj/doppel"
 
 [dependencies]
-serde_json = "1"
+# float_roundtrip is required: serde_json's default float parsing is fast but
+# not correctly rounded, and doppel's own CI caught it turning a recorded
+# value into its 1-ULP neighbor.
+serde_json = { version = "1", features = ["float_roundtrip"] }
 
 [[example]]
 name = "statlib"
